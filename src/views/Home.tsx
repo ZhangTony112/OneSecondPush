@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react'
 import { useRequest } from 'ahooks'
-import { getSongListType, getTopPlaylist } from '../service/api'
+import { getSongListType, getTopPlaylist } from '@/service/api'
 // Pick<>
 // Record<>
 // Required<>
