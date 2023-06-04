@@ -49,5 +49,4 @@
 // }
 
 // export default Bar
-
-export {}
+export default {}
