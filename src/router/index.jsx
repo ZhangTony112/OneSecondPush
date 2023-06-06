@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Login from '@/views/Authority/Login'
