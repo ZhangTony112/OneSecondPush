@@ -1,7 +1,9 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react'
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Home from './views/Home'
+import { BrowserRouter } from 'react-router-dom'
+import Auth from '@/auth/Auth'
+import RouterConfig from '@/router/index'
+
 // import Bar from '@/components/Bar'
 
 // 如何提取其他组件的props类型
@@ -13,12 +15,11 @@ import Home from './views/Home'
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <Auth>
+        <RouterConfig />
+      </Auth>
+    </BrowserRouter>
   )
 }
 
