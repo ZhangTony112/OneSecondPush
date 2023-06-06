@@ -31,6 +31,7 @@ module.exports = {
   plugins: ['react', '@babel', '@typescript-eslint', 'react-hooks', 'unicorn', 'import'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    'import/extensions': 0
+    'import/extensions': 0,
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }]
   }
 }
