@@ -7,11 +7,13 @@ import Layout from '@/views/Authority/Layout'
 import Agent from '@/views/User/Agent'
 import Admins from '@/views/User/Admins'
 import Users from '@/views/User/Users'
+import Edit from '@/views/User/edit'
 // 订单管理
 import Orders from '@/views/Order/Orders'
 import Capitaltrend from '@/views/Order/Capitaltrend'
 import Cancelset from '@/views/Order/Cancelset'
 import Feeset from '@/views/Order/Feeset'
+import Cancel from '@/components/cancel'
 // 骑手管理
 import Riders from '@/views/Rider/Riders'
 import Registers from '@/views/Rider/Registers'
@@ -52,6 +54,8 @@ function App() {
         {/* url为/home时主动触发二级路由 */}
         <Route path="/user/agent" element={<Agent />} />
         <Route path="/user/admins" element={<Admins />} />
+        <Route path="/user/agent/edit/add" element={<Edit />} />
+        <Route path="/user/edit/add" element={<Cancel />} />
         <Route path="/user/users" element={<Users />} />
         <Route path="/order/orders" element={<Orders />} />
         <Route path="/order/capitaltrend" element={<Capitaltrend />} />

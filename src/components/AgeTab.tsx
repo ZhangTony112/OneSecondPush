@@ -1,12 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Input, Button, Select, Table, Tooltip, Tag } from 'antd'
-// import { UserOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
+import { Button, Table, Tooltip, Tag } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
+import { UserOutlined, ReloadOutlined } from '@ant-design/icons'
+// import { getUserList, ResponseData } from '@/service/api'
+import { getUserList, ResponseData } from '@/service/OrederLiat'
+import moment from 'moment'
 import AgentUserSet from '@/static/svgImg/agentUserSet.svg'
 import AgentLittle from '@/static/svgImg/agentLittle.svg'
-import type { ColumnsType } from 'antd/es/table'
-import moment from 'moment'
 
 const Ager = styled.div`
   .css-dev-only-do-not-override-aui75v.ant-select-single:not(.ant-select-customize-input)
@@ -33,17 +36,15 @@ const Ager = styled.div`
     border: 1px solid #955ce6;
   }
 `
-// 搜索框
-const AdminsIndex: React.FC = function () {
-  interface InputItem {
-    placeholder: string
-  }
+const AgeTabCompon: React.FC = function () {
+  // 请求的数据
+  const [tableData, setTableData] = useState<ResponseData['data']['data']>([])
 
-  const inputs: InputItem[] = [
-    { placeholder: '用户编号' },
-    { placeholder: '昵称' },
-    { placeholder: '手机号' }
-  ]
+  useEffect(() => {
+    getUserList().then((res) => {
+      setTableData(res.data.data)
+    })
+  }, [])
   // Tab表格
   interface DataType {
     key: React.Key
@@ -59,6 +60,7 @@ const AdminsIndex: React.FC = function () {
     operationButton: React.ReactNode
     operationIcon: React.ReactNode
   }
+
   // 点击事件
   const handleClick = (record: DataType) => {
     // eslint-disable-next-line no-console
@@ -148,11 +150,33 @@ const AdminsIndex: React.FC = function () {
 
   const data: DataType[] = []
 
-  const handleChange = (value: string) => {
-    // eslint-disable-next-line no-console
-    console.log(`selected ${value}`)
+  for (let i = 0; i < tableData.length; i += 1) {
+    data.push({
+      key: i,
+      agentNo: tableData[i].agentAccount,
+      agentAccount: tableData[i].agentAccount,
+      mobileNumber: tableData[i].mobileNumber,
+      realName: tableData[i].realName,
+      status: tableData[i].status,
+      createTime: tableData[i].createTime,
+      updateTime: tableData[i].updateTime,
+      defaultPwd: tableData[i].defaultPwd,
+      updatedBy: tableData[i].updatedBy,
+      operationButton: '...',
+      operationIcon: <UserOutlined color="#955ce6" />
+    })
   }
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const start = () => {
+    setLoading(true)
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([])
+      setLoading(false)
+    }, 1000)
+  }
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     // eslint-disable-next-line no-console
@@ -165,45 +189,33 @@ const AdminsIndex: React.FC = function () {
     onChange: onSelectChange
   }
   const hasSelected = selectedRowKeys.length > 0
-
   return (
     <Ager className=" h-full">
       <div className="h-full overflow-y-scroll gdScroll p-5">
-        <div className=" text-[24px] text-[#33333] font-[500] mb-4">管理员列表</div>
-        <div className=" flex flex-wrap justify-start leading-5">
-          {inputs.map((input) => (
-            <Input
-              key={input.placeholder}
-              placeholder={input.placeholder}
-              className="!w-[12.5rem] h-10 !mr-2 !mb-2"
-            />
-          ))}
-          <Select
-            placeholder="状态"
-            style={{ width: 200, height: 40 }}
-            onChange={handleChange}
-            options={[
-              { value: '状态:全部', label: '状态:全部' },
-              { value: '状态:启用', label: '状态:启用' },
-              { value: '状态:禁止', label: '状态:禁止' }
-            ]}
-          />
-        </div>
-        <div className="mt-8 mb-8">
-          <Button className="w-32 !h-10 mr-2">取消</Button>
-          <Button className="w-32 !h-10" type="primary">
-            搜索
-          </Button>
-        </div>
-        <div className="relative">
-          <Table bordered rowSelection={rowSelection} columns={columns} dataSource={data} />
-          <span style={{ position: 'absolute', bottom: 17, right: 280 }}>
-            {hasSelected ? `共 ${selectedRowKeys.length} 条数据` : ''}
-          </span>
+        <div>
+          <div style={{ marginBottom: 30, borderTop: '1px solid #cccc' }}>
+            <div className="flex justify-between text-center mt-8">
+              <Link to="/user/agent/edit/add">
+                <Button type="primary" className="w-24 !h-10" onClick={start} loading={loading}>
+                  添加代理
+                </Button>
+              </Link>
+              <Button className="w-14 !h-10 ">
+                <ReloadOutlined />
+              </Button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <Table bordered rowSelection={rowSelection} columns={columns} dataSource={data} />
+            <span style={{ position: 'absolute', bottom: 17, right: 280 }}>
+              {hasSelected ? `共 ${selectedRowKeys.length} 条数据` : ''}
+            </span>
+          </div>
         </div>
       </div>
     </Ager>
   )
 }
 
-export default AdminsIndex
+export default AgeTabCompon
